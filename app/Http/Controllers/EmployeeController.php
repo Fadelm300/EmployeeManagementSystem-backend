@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -13,26 +15,36 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return response()->json($employees, 200);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Employees retrieved successfully',
+            'data' => $employees
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:employees,email',
-            'position' => 'required|string|max:255',
-            'salary' => 'required|numeric',
-            'status' => 'required|in:active,inactive',
-        ]);
+        public function store(StoreEmployeeRequest $request)
+        {
+            try {
+                $employee = Employee::create($request->validated());
 
-        $employee = Employee::create($validated);
+                return response()->json([
+                    'status'  => 'success',
+                    'message' => 'Employee created successfully',
+                    'data'    => $employee
+                ], 201);
 
-        return response()->json($employee, 201);
-    }
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Failed to create employee: ' . $e->getMessage()
+                ], 500);
+            }
+        }
+
 
     /**
      * Display the specified resource.
@@ -42,35 +54,49 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
 
         if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Employee not found'
+            ], 404);
         }
 
-        return response()->json($employee, 200);
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Employee retrieved successfully',
+            'data'    => $employee
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $employee = Employee::find($id);
+        public function update(UpdateEmployeeRequest $request, string $id)
+        {
+            $employee = Employee::find($id);
 
-        if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+            if (!$employee) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Employee not found'
+                ], 404);
+            }
+
+            try {
+                $employee->update($request->validated());
+
+                return response()->json([
+                    'status'  => 'success',
+                    'message' => 'Employee updated successfully',
+                    'data'    => $employee
+                ], 200);
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Failed to update employee: ' . $e->getMessage()
+                ], 500);
+            }
         }
-
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:employees,email,' . $id,
-            'position' => 'sometimes|required|string|max:255',
-            'salary' => 'sometimes|required|numeric',
-            'status' => 'sometimes|required|in:active,inactive',
-        ]);
-
-        $employee->update($validated);
-
-        return response()->json($employee, 200);
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -80,11 +106,17 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
 
         if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Employee not found'
+            ], 404);
         }
 
         $employee->delete();
 
-        return response()->json(['message' => 'Employee deleted successfully'], 200);
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Employee deleted successfully'
+        ], 200);
     }
 }
