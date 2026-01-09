@@ -315,23 +315,23 @@ php artisan serve                   # Run Laravel server
 
 
 ### GET All Employees
-![Get Employees Request](/storage/app/public/images/first%20test%20for%20get%20.png)
+![Get Employees Request](/public/images/first%20test%20for%20get%20.png)
 
 ### POST New Employee
-![Add Employee Request](/storage/app/public/images/first%20test%20for%20post.png)
+![Add Employee Request](/public/images/first%20test%20for%20post.png)
 
 ### Authentication Check
-![Auth Check Request](/storage/app/public/images/first%20test%20for%20auth%20and%20get%20.png)
+![Auth Check Request](/public/images/first%20test%20for%20auth%20and%20get%20.png)
 
 ### Login
-![Login Request](/storage/app/public/images/first%20test%20for%20auth%20login.png)
+![Login Request](/public/images/first%20test%20for%20auth%20login.png)
 
 ### Logout
-![Logout Request](/storage/app/public/images/first%20test%20for%20auth%20and%20logout.png)
+![Logout Request](/public/images/first%20test%20for%20auth%20and%20logout.png)
 
 ### DELETE Employee
-![Delete Employee Request](/storage/app/public/images/first%20test%20for%20%20delet.png)
+![Delete Employee Request](/public/images/first%20test%20for%20%20delet.png)
 
 ### PUT Update Employee
-![Update Employee Request](/storage/app/public/images/first%20test%20for%20put.png)
+![Update Employee Request](/public/images/first%20test%20for%20put.png)
 
