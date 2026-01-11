@@ -36,7 +36,7 @@ cd backend
 2. **Install dependencies**
 ```bash
 composer install
-
+```
 
 3. **Copy .env file**
 
